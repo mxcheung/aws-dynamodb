@@ -17,7 +17,7 @@ public class LittlesController {
     @Autowired
     private LittlesService littlesService = new LittlesService();
 
-    @RequestMapping(value="/Littles", method=RequestMethod.GET)
+    @RequestMapping(value="/littles", method=RequestMethod.GET)
     public Littles getLittles(HttpServletResponse response,
             @RequestParam(value = "filter", required = false) String filter,
             @RequestParam(value = "value", required = false) String value ) {
