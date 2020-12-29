@@ -53,3 +53,31 @@ Now, if you run the same command to scan all of the table contents, you'll find 
 ```
 aws dynamodb scan --table-name LittlesTable
 ```
+
+
+### Building A Docker Image
+
+```
+sudo yum -y install java-1.8.0-openjdk-devel
+sudo alternatives --set java /usr/lib/jvm/java-1.8.0-openjdk.x86_64/bin/java
+sudo alternatives --set javac /usr/lib/jvm/java-1.8.0-openjdk.x86_64/bin/javac
+
+sudo wget http://repos.fedorapeople.org/repos/dchen/apache-maven/epel-apache-maven.repo -O /etc/yum.repos.d/epel-apache-maven.repo
+
+sudo sed -i s/\$releasever/6/g /etc/yum.repos.d/epel-apache-maven.repo
+
+sudo yum install -y apache-maven
+```
+
+```
+cd ~/environment/aws-dynamodb/service
+mvn clean install
+```
+
+aws sts get-caller-identity
+
+
+cd ..
+docker build . -t 123456789.dkr.ecr.ap-southeast-2.amazonaws.com/litles/service:latest
+
+docker run -p 8080:8080 123456789.dkr.ecr.ap-southeast-2.amazonaws.com/litles/service:latest
