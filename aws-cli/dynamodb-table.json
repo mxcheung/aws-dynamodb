@@ -1,0 +1,45 @@
+{
+    "TableName": "LittlesTable",
+    "ProvisionedThroughput": {
+      "ReadCapacityUnits": 5,
+      "WriteCapacityUnits": 5
+    },
+    "AttributeDefinitions": [
+      {
+        "AttributeName": "LittleId",
+        "AttributeType": "S"
+      },
+      {
+        "AttributeName": "Name",
+        "AttributeType": "S"
+      }
+    ],
+    "KeySchema": [
+      {
+        "AttributeName": "LittleId",
+        "KeyType": "HASH"
+      }
+    ],
+    "GlobalSecondaryIndexes": [
+      {
+        "IndexName": "NameIndex",
+        "KeySchema": [
+          {
+            "AttributeName": "Name",
+            "KeyType": "HASH"
+          },
+          {
+            "AttributeName": "LittleId",
+            "KeyType": "RANGE"
+          }
+        ],
+        "Projection": {
+          "ProjectionType": "ALL"
+        },
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": 5,
+          "WriteCapacityUnits": 5
+        }
+      }
+    ]
+  }
