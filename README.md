@@ -84,3 +84,52 @@ docker run -p 8080:8080 123456789.dkr.ecr.ap-southeast-2.amazonaws.com/litles/se
 
 
 https://f5c898c6e65144dd843332c102e79e82.vfs.cloud9.ap-southeast-2.amazonaws.com/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
+
+
+
+### Security
+
+
+# This is a role which is used by the ECS tasks. Tasks in Amazon ECS define
+  # the containers that should be deployed togehter and the resources they
+  # require from a compute/memory perspective. So, the policies below will define
+  # the IAM permissions that our Littles docker containers will have.
+  ECSTaskRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Statement:
+        - Effect: Allow
+          Principal:
+            Service: [ecs-tasks.amazonaws.com]
+          Action: ['sts:AssumeRole']
+      Path: /
+      Policies:
+        - PolicyName: AmazonECSTaskRolePolicy
+          PolicyDocument:
+            Statement:
+            - Effect: Allow
+              Action:
+                # Allow the ECS Tasks to download images from ECR
+                - 'ecr:GetAuthorizationToken'
+                - 'ecr:BatchCheckLayerAvailability'
+                - 'ecr:GetDownloadUrlForLayer'
+                - 'ecr:BatchGetImage'
+
+                # Allow the ECS tasks to upload logs to CloudWatch
+                - 'logs:CreateLogStream'
+                - 'logs:CreateLogGroup'
+                - 'logs:PutLogEvents'
+              Resource: '*'
+
+            - Effect: Allow
+              Action:
+                # Allows the ECS tasks to interact with only the LittlesTable
+                # in DynamoDB
+                - 'dynamodb:Scan'
+                - 'dynamodb:Query'
+                - 'dynamodb:UpdateItem'
+                - 'dynamodb:GetItem'
+              Resource: 'arn:aws:dynamodb:*:*:table/LittlesTable*'
+
+  
