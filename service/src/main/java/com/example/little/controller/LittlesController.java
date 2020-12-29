@@ -33,4 +33,10 @@ public class LittlesController {
 
         return Littles;
     }
+
+    @RequestMapping(value="/", method=RequestMethod.GET)
+    public String healthCheckResponse() {
+        return "Nothing here, used for health check. Try /littles instead.";
+    }
+
 }
