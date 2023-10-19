@@ -1,0 +1,2 @@
+botocore.exceptions.ClientError: 
+An error occurred (InvalidSignatureException) when calling the Scan operation: Signature expired: 20220530T000000Z is now earlier than 20231019T002924Z (20231019T004424Z - 15 min.)
