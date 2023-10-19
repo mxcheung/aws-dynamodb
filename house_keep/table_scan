@@ -1,0 +1,21 @@
+import boto3
+
+# Initialize the DynamoDB resource
+dynamodb = boto3.resource('dynamodb', region_name='your_region')
+
+# Replace 'YourTableName' with your table name
+table_name = 'YourTableName'
+
+# Access the DynamoDB table
+table = dynamodb.Table(table_name)
+
+# Perform a Scan operation
+response = table.scan()
+
+# Check for errors in the response
+if 'Items' in response:
+    items = response['Items']
+    for item in items:
+        print(item)
+else:
+    print("No items found in the scan operation.")
