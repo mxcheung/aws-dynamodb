@@ -1,2 +1,16 @@
 botocore.exceptions.ClientError: 
 An error occurred (InvalidSignatureException) when calling the Scan operation: Signature expired: 20220530T000000Z is now earlier than 20231019T002924Z (20231019T004424Z - 15 min.)
+
+
+import boto3
+
+# Configure AWS credentials
+aws_access_key_id = 'YOUR_ACCESS_KEY'
+aws_secret_access_key = 'YOUR_SECRET_KEY'
+aws_session_token = 'YOUR_SESSION_TOKEN'  # Only if you have a session token
+
+# Configure Boto3 client
+dynamodb = boto3.client('dynamodb', region_name='us-east-1', 
+                        aws_access_key_id=aws_access_key_id, 
+                        aws_secret_access_key=aws_secret_access_key, 
+                        aws_session_token=aws_session_token)
