@@ -106,3 +106,77 @@ json_data = json.dumps(items, indent=2)
 with open('exported_data.json', 'w') as outfile:
     outfile.write(json_data)
 ```
+
+Execute the Query: Use the AWS SDK to execute the PartiQL query against your DynamoDB table.
+
+Here's an example of executing the query using Python and the Boto3 library:
+```python
+import boto3
+
+dynamodb = boto3.client('dynamodb')
+
+query = "DELETE FROM YourTableName WHERE #timestamp < :one_year_ago"
+query_params = {
+    "#timestamp": "timestamp",
+    ":one_year_ago": {"S": "2022-10-21T00:00:00Z"}  # Replace with the actual timestamp one year ago
+}
+
+response = dynamodb.execute_statement(Statement=query, Parameters=query_params)
+
+```
+
+```python
+import boto3
+
+dynamodb = boto3.client('dynamodb')
+
+query = "DELETE FROM PetInventory WHERE #timestamp < :one_year_ago"
+query_params = {
+    "#timestamp": "insert_ts",
+    ":one_year_ago": {"S": "2022-10-21T00:00:00Z"}  # Replace with the actual timestamp one year ago
+}
+
+response = dynamodb.execute_statement(Statement=query, Parameters=query_params)
+
+```
+
+
+
+```python
+import boto3
+import datetime
+
+# Initialize the DynamoDB client
+dynamodb = boto3.client('dynamodb')
+
+# Define the table name and the cutoff date
+table_name = 'PetInventory'
+cutoff_date = datetime.datetime.now() - datetime.timedelta(days=365)
+
+# Perform a scan to identify items to delete
+response = dynamodb.scan(
+    TableName=table_name,
+    FilterExpression="#insert_ts < :cutoff",
+    ExpressionAttributeNames={
+        "#insert_ts": "insert_ts"
+    },
+    ExpressionAttributeValues={
+        ":cutoff": cutoff_date.strftime("%Y-%m-%d")
+    }
+)
+
+# Extract the items to be deleted
+items_to_delete = response.get('Items', [])
+
+# Delete the items in batches (25 items per batch)
+with dynamodb.batch_writer(TableName=table_name) as batch:
+    for item in items_to_delete:
+        batch.delete_item(
+            Key={
+                'YourPrimaryKey': item['YourPrimaryKey']
+            }
+        )
+
+print(f"Deleted {len(items_to_delete)} items.")
+
+```
