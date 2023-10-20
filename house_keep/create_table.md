@@ -19,3 +19,8 @@ Check the table was created:
 ```javascript
 aws dynamodb describe-table --table-name PetInventory
 ```
+
+Delete the table:
+```javascript
+aws dynamodb delete-table --table-name PetInventory
+```
