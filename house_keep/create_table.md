@@ -13,7 +13,21 @@ aws dynamodb\
             AttributeName=pet_species,KeyType=HASH\
             AttributeName=pet_id,KeyType=RANGE\
         --billing-mode PAY_PER_REQUEST
+
+aws dynamodb\
+    create-table\
+        --table-name PetInventory\
+        --attribute-definitions\
+            AttributeName=pet_species,AttributeType=S\
+            AttributeName=pet_id,AttributeType=N\
+            AttributeName=insert_ts,AttributeType=S\
+        --key-schema\
+            AttributeName=pet_species,KeyType=HASH\
+            AttributeName=pet_id,KeyType=RANGE\
+        --billing-mode PAY_PER_REQUEST
+
 ```
+
 
 Check the table was created:
 ```javascript
@@ -36,6 +50,39 @@ aws dynamodb put-item --table-name MyTable --item '{
     "insert_ts": {"S": "2023-10-21T12:34:56Z"}
 }'
 
+aws dynamodb put-item --table-name PetInventory --item '{
+    "pet_id": {"N": "123"},
+    "pet_species": {"S": "Cat"}
+}'
+
+
+aws dynamodb put-item --table-name PetInventory --item '{
+    "pet_id": {"N": "124"},
+    "pet_species": {"S": "Cat"},
+   "insert_ts": {"S": "2023-10-21T12:34:56Z"}
+}'
+
+
+aws dynamodb put-item --table-name PetInventory --item '{
+    "pet_id": {"N": "125"},
+    "pet_species": {"S": "Dog"},
+   "insert_ts": {"S": "2022-10-21T12:34:56Z"}
+}'
+
+
+```
+
+Query the table:
+```javascript
+aws dynamodb scan \
+  --table-name YourTableName \
+  --filter-expression "insert_ts <= :oneYearAgo" \
+  --expression-attribute-values '{":oneYearAgo": {"S": "YYYY-MM-DDTHH:MM:SSZ"}}'
+
+aws dynamodb scan \
+  --table-name PetInventory \
+  --filter-expression "insert_ts <= :oneYearAgo" \
+  --expression-attribute-values '{":oneYearAgo": {"S": "2022-12-21T12:34:56Z"}}'
 
 ```
 
