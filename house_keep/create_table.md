@@ -150,44 +150,7 @@ response = dynamodb.execute_statement(Statement=query, Parameters=query_params)
 
 
 
-```python
-import boto3
-import datetime
 
-# Initialize the DynamoDB client
-dynamodb = boto3.client('dynamodb')
-
-# Define the table name and the cutoff date
-table_name = 'PetInventory'
-cutoff_date = datetime.datetime.now() - datetime.timedelta(days=365)
-
-# Perform a scan to identify items to delete
-response = dynamodb.scan(
-    TableName=table_name,
-    FilterExpression="#insert_ts < :cutoff",
-    ExpressionAttributeNames={
-        "#insert_ts": "insert_ts"
-    },
-    ExpressionAttributeValues={
-        ":cutoff": cutoff_date.strftime("%Y-%m-%d")
-    }
-)
-
-# Extract the items to be deleted
-items_to_delete = response.get('Items', [])
-
-# Delete the items in batches (25 items per batch)
-with dynamodb.batch_writer(TableName=table_name) as batch:
-    for item in items_to_delete:
-        batch.delete_item(
-            Key={
-                'YourPrimaryKey': item['YourPrimaryKey']
-            }
-        )
-
-print(f"Deleted {len(items_to_delete)} items.")
-
-```
 
 
 ```python
