@@ -32,7 +32,8 @@ aws dynamodb put-item --table-name MyTable --item '{
     "ID": {"S": "123"},
     "Timestamp": {"N": "1634850000"},
     "Name": {"S": "SampleName"},
-    "Value": {"N": "42"}
+    "Value": {"N": "42"},
+    "insert_ts": {"S": "2023-10-21T12:34:56Z"}
 }'
 
 
