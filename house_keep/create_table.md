@@ -74,7 +74,7 @@ aws dynamodb put-item --table-name PetInventory --item '{
 aws dynamodb put-item --table-name PetInventory --item '{
     "pet_id": {"S": "125"},
     "pet_species": {"S": "Dog"},
-   "insert_ts": {"S": "2022-10-21T12:34:56Z"}
+   "insert_ts": {"S": "2021-10-21T12:34:56Z"}
 }'
 
 
@@ -192,36 +192,32 @@ print(f"Deleted {len(items_to_delete)} items.")
 
 ```python
 import boto3
-import datetime
+from datetime import datetime, timedelta
+from boto3.dynamodb.conditions import Key, Attr
 
 # Initialize the DynamoDB client
-dynamodb = boto3.client('dynamodb')
+dynamodb = boto3.resource('dynamodb')
+table = dynamodb.Table('PetInventory')
 
-# Define the table name and the cutoff date
-table_name = 'PetInventory'
-cutoff_date = datetime.datetime.now() - datetime.timedelta(days=365)
+# Calculate the date one year ago from the current date
+one_year_ago = (datetime.now() - timedelta(days=365)).strftime('%Y-%m-%d')
 
 # Perform a scan to identify items to delete
-response = dynamodb.scan(
-    TableName=table_name,
-    FilterExpression="#insert_ts < :cutoff",
-    ExpressionAttributeNames={
-        "#insert_ts": "insert_ts"
-    },
-    ExpressionAttributeValues={
-        ":cutoff": cutoff_date.strftime("%Y-%m-%d")
-    }
-)
+
+
+response = table.scan(
+        FilterExpression=Attr('insert_ts').lt(one_year_ago)
+    )
 
 # Extract the items to be deleted
 items_to_delete = response.get('Items', [])
 
 # Delete the items in batches (25 items per batch)
-with dynamodb.batch_writer(TableName=table_name) as batch:
+with table.batch_writer() as batch:
     for item in items_to_delete:
         batch.delete_item(
             Key={
-                'YourPrimaryKey': item['YourPrimaryKey']
+                'pet_id': item['pet_id']
             }
         )
 
