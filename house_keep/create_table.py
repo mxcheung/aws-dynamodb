@@ -56,3 +56,64 @@ table_waiter = dynamodb.get_waiter('table_exists')
 table_waiter.wait(TableName=table_name)
 
 print(f"Table '{table_name}' has been created.")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+===============================================================================================================
+
+aws dynamodb\
+    create-table\
+        --table-name PetInventory\
+        --attribute-definitions\
+            AttributeName=pet_species,AttributeType=S\
+            AttributeName=pet_id,AttributeType=N\
+        --key-schema\
+            AttributeName=pet_species,KeyType=HASH\
+            AttributeName=pet_id,KeyType=RANGE\
+        --billing-mode PAY_PER_REQUEST
+
+===============================================================================================================
+
+
+import boto3
+ddb = boto3.client('dynamodb')
+createResponse = ddb.create_table(
+    AttributeDefinitions=[
+        {
+            'AttributeName':'pet_species',
+            'AttributeType': 'S',
+        }, 
+        {
+            'AttributeName':'pet_id',
+            'AttributeType':'N'
+        }
+    ], 
+    KeySchema=[
+        {
+            'AttributeName':'pet_species',
+            'KeyType':'HASH'
+        },
+        {
+            'AttributeName':'pet_id',
+            'KeyType':'RANGE'
+        },
+    ],
+    BillingMode = 'PAY_PER_REQUEST',
+    TableName='PetInventory'
+)
+
+
+===============================================================================================================              
+
+            
