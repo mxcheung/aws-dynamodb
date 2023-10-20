@@ -1,4 +1,4 @@
-
+# Create a DynamoDB Table Using the AWS CLI
 
 Enter the following create-table command in the terminal:
 
