@@ -26,4 +26,10 @@ EXP=`date -d '+5 days' +%s`
 aws dynamodb put-item --table-name "TTLExample" --item '{"id": {"N": "1"}, "ttl": {"N": "'$EXP'"}}'
 
 
+
+EXP=`date -d '+5 days' +%s`
+aws dynamodb put-item --table-name "PetInventory3" --item '{"pet_id": {"S": "1"}, "ttl": {"N": "'$EXP'"}}'
+
+
+
 ```
