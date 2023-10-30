@@ -40,7 +40,7 @@ response = table.update_item(
 print(response)
 
 
-def items(table) -> List[Dict]:
+def get_items(table) -> List[Dict]:
     response = table.scan()
     records = response['Items'] if 'Items' in response else []
     while response.get('LastEvaluatedKey'):
@@ -59,6 +59,10 @@ def remove_attribute_references(old_references, primary_key, table):
         # table.update_item(Key={ primary_key: item[primary_key],  update_expresssion: update_expresssion  })
     logger.info('Done updating %s old settings.', len(old_references))
     return items
+
+
+response = get_items(table)
+remove_attribute_references(response,'pet_id', 'PetInventory') 
 
 
 ```
