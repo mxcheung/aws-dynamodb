@@ -10,7 +10,18 @@ table_name = 'PetInventory'
 
 
 def get_items(table) -> List[Dict]:
-    response = table.scan()
+    # Define the filter expression for scanning
+
+    # Define the expression attribute values
+    expression_attribute_values = {
+        ':species_value': 'Dog'
+    }
+    
+    # Define the filter expression
+    filter_expression = 'pet_species = :species_value'
+
+    response = table.scan( FilterExpression=filter_expression,
+                           ExpressionAttributeValues=expression_attribute_values )
     records = response['Items'] if 'Items' in response else []
     while response.get('LastEvaluatedKey'):
         start_key = response['LastEvaluatedKey']
@@ -24,14 +35,11 @@ def remove_attribute_references(old_references, primary_key, table):
     items = len(old_references)
     # Define the update expression to rename "insert_ts" to "insert_timestamp"
     update_expression = "SET insert_timestamp = insert_ts REMOVE insert_ts"
-    conditional_expression = "attribute_exists(insert_ts)"
     for item in old_references:
         if 'insert_ts' in item:
              # Rename the attribute and remove the original one
              table.update_item(Key={ "pet_id": item[primary_key]},  
-                               UpdateExpression= update_expression,  
-                               ConditionExpression=conditional_expression
-                               )
+                               UpdateExpression= update_expression)
              print("hello")
     return items
 
