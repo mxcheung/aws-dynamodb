@@ -39,4 +39,14 @@ response = table.update_item(
 print(response)
 
 
+def remove_attribute_references(old_references, primary_key, table):
+    items = len(old_references)
+    update_expresssion = 'REMOVE attributeXyz'
+    for item in old_references:
+        logger.info('Remove attributeXyz attribute %s item with primary key.', item[primary_key])
+        # table.update_item(Key={ primary_key: item[primary_key],  update_expresssion: update_expresssion  })
+    logger.info('Done updating %s old settings.', len(old_references))
+    return items
+
+
 ```
