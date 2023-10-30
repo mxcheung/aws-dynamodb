@@ -62,7 +62,6 @@ def remove_attribute_references(old_references, primary_key, table):
 
 
 response = get_items(table)
-remove_attribute_references(response,'pet_id', 'PetInventory') 
-
+remove_attribute_references(response,'pet_id', table) 
 
 ```
