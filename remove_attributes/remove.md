@@ -47,6 +47,7 @@ aws dynamodb scan \
 https://stackoverflow.com/questions/51660198/delete-all-items-in-a-dynamodb-table-using-bash-with-both-partition-and-sort-key
 
 ```
+export table_name='PetInventory'
 aws dynamodb describe-table --table-name $table_name | jq '.Table | del(.TableId, .TableArn, .ItemCount, .TableSizeBytes, .CreationDateTime, .TableStatus, .LatestStreamArn, .LatestStreamLabel, .ProvisionedThroughput.NumberOfDecreasesToday, .ProvisionedThroughput.LastIncreaseDateTime)' > schema.json
 
 aws dynamodb delete-table --table-name $table_name
