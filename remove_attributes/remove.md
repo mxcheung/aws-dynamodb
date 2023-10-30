@@ -47,7 +47,7 @@ aws dynamodb scan \
 aws dynamodb update-item \
     --table-name PetInventory \
     --key '{"pet_id":{"S":"124"}}' \
-    --update-expression "REMOVEinsert_ts" \
+    --update-expression "REMOVE insert_ts" \
     --return-values ALL_NEW
 ```
 
