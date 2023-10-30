@@ -8,17 +8,15 @@
 Enter the following create-table command in the terminal:
 
 ```python
+
 aws dynamodb\
     create-table\
         --table-name PetInventory\
         --attribute-definitions\
-            AttributeName=pet_species,AttributeType=S\
-            AttributeName=pet_id,AttributeType=N\
-            AttributeName=insert_ts,AttributeType=S\
+            AttributeName=pet_id,AttributeType=S\
         --key-schema\
-            AttributeName=pet_species,KeyType=HASH\
-            AttributeName=pet_id,KeyType=RANGE\
-
+            AttributeName=pet_id,KeyType=HASH\
+        --billing-mode PAY_PER_REQUEST   --billing-mode PAY_PER_REQUEST
 
 ```
 
