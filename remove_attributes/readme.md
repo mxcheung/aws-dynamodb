@@ -43,3 +43,12 @@ aws dynamodb put-item --table-name PetInventory --item '{
 
 
 ```
+
+
+Query the table:
+```javascript
+
+aws dynamodb scan \
+  --table-name PetInventory \
+```
+
