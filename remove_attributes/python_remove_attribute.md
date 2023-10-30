@@ -8,6 +8,7 @@ pip install boto
 
 ```
 import boto3
+from typing import Dict, List
 
 # Create a Boto3 DynamoDB client
 dynamodb = boto3.resource('dynamodb')
