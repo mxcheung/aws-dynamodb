@@ -21,3 +21,16 @@ aws dynamodb\
 
 
 ```
+
+Check the table was created:
+```javascript
+aws dynamodb describe-table --table-name PetInventory
+```
+
+Syntax for inserting a record:
+```javascript
+aws dynamodb put-item --table-name TableName --item '{
+    "AttributeName1": {"DataType": "AttributeType1", "AttributeValue": "Value1"},
+    "AttributeName2": {"DataType": "AttributeType2", "AttributeValue": "Value2"},
+    ...
+}'
