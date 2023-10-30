@@ -49,6 +49,13 @@ aws dynamodb update-item \
     --key '{"pet_id":{"S":"124"}}' \
     --update-expression "REMOVE insert_ts" \
     --return-values ALL_NEW
+
+aws dynamodb update-item \
+    --table-name PetInventory \
+    --key '{"pet_id":{"S":"125"}}' \
+    --update-expression "REMOVE insert_ts" \
+    --return-values ALL_NEW
+
 ```
 
 https://stackoverflow.com/questions/51660198/delete-all-items-in-a-dynamodb-table-using-bash-with-both-partition-and-sort-key
