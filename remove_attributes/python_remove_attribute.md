@@ -1,6 +1,12 @@
 # python_remove_attribute.md
 
 ```
+pip install boto
+
+```
+
+
+```
 import boto3
 
 # Create a Boto3 DynamoDB client
