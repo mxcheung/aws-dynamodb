@@ -24,9 +24,15 @@ def remove_attribute_references(old_references, primary_key, table):
     items = len(old_references)
     # Define the update expression to rename "insert_ts" to "insert_timestamp"
     update_expression = "SET insert_timestamp = insert_ts REMOVE insert_ts"
+    conditional_expression = "attribute_exists(insert_ts)"
     for item in old_references:
-         table.update_item(Key={ "pet_id": item[primary_key]},  UpdateExpression= update_expression  )
-         print("hello")
+        if 'insert_ts' in item:
+             # Rename the attribute and remove the original one
+             table.update_item(Key={ "pet_id": item[primary_key]},  
+                               UpdateExpression= update_expression,  
+                               ConditionExpression=conditional_expression
+                               )
+             print("hello")
     return items
 
 
