@@ -39,6 +39,17 @@ response = table.update_item(
 print(response)
 
 
+def items(table) -> List[Dict]:
+    response = table.scan()
+    records = response['Items'] if 'Items' in response else []
+    while response.get('LastEvaluatedKey'):
+        start_key = response['LastEvaluatedKey']
+        response = table.scan(
+            ExclusiveStartKey=start_key
+        )
+        records.extend(response['Items'])
+    return records
+
 def remove_attribute_references(old_references, primary_key, table):
     items = len(old_references)
     update_expresssion = 'REMOVE attributeXyz'
