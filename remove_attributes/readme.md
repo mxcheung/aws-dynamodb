@@ -14,10 +14,10 @@ aws dynamodb\
         --attribute-definitions\
             AttributeName=pet_species,AttributeType=S\
             AttributeName=pet_id,AttributeType=N\
+            AttributeName=insert_ts,AttributeType=S\
         --key-schema\
             AttributeName=pet_species,KeyType=HASH\
             AttributeName=pet_id,KeyType=RANGE\
-        --billing-mode PAY_PER_REQUEST
 
 
 ```
@@ -29,8 +29,19 @@ aws dynamodb describe-table --table-name PetInventory
 
 Syntax for inserting a record:
 ```javascript
-aws dynamodb put-item --table-name TableName --item '{
-    "AttributeName1": {"DataType": "AttributeType1", "AttributeValue": "Value1"},
-    "AttributeName2": {"DataType": "AttributeType2", "AttributeValue": "Value2"},
-    ...
+
+aws dynamodb put-item --table-name PetInventory --item '{
+    "pet_id": {"S": "124"},
+    "pet_species": {"S": "Cat"},
+   "insert_ts": {"S": "2023-10-21T12:34:56Z"}
 }'
+
+
+aws dynamodb put-item --table-name PetInventory --item '{
+    "pet_id": {"S": "125"},
+    "pet_species": {"S": "Dog"},
+    "insert_ts": {"S": "2021-10-21T12:34:56Z"}
+}'
+
+
+```
