@@ -31,6 +31,20 @@ def get_items(table) -> List[Dict]:
         records.extend(response['Items'])
     return records
 
+def get_items_with_insert_ts(table) -> List[Dict]:
+    # Define the filter expression
+    filter_expression = 'attribute_exists(insert_ts)'
+    response = table.scan( FilterExpression=filter_expression )
+    records = response['Items'] if 'Items' in response else []
+    while response.get('LastEvaluatedKey'):
+        start_key = response['LastEvaluatedKey']
+        response = table.scan(
+            ExclusiveStartKey=start_key
+        )
+        records.extend(response['Items'])
+    return records
+
+
 def remove_attribute_references(old_references, primary_key, table):
     items = len(old_references)
     # Define the update expression to rename "insert_ts" to "insert_timestamp"
