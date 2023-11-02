@@ -52,7 +52,7 @@ def remove_attribute_references(old_references, primary_key, table):
     for item in old_references:
         if 'insert_ts' in item:
              # Rename the attribute and remove the original one
-             table.update_item(Key={ "pet_id": item[primary_key]},  
+             table.update_item(Key={ primary_key: item[primary_key]},  
                                UpdateExpression= update_expression)
              print("hello")
     return items
