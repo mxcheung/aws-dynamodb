@@ -85,6 +85,9 @@ docker run -p 8080:8080 123456789.dkr.ecr.ap-southeast-2.amazonaws.com/litles/se
 
 https://f5c898c6e65144dd843332c102e79e82.vfs.cloud9.ap-southeast-2.amazonaws.com/swagger-ui/index.html?configUrl=/v3/api-docs/swagger-config
 
+```
+aws dynamodb update-table --table-name <YourTableName> --delete-protection-disabled
+```
 
 
 ### Security
